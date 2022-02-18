@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/infinite-scroll-reddit-no-libraries/static/css/main.87d98a23.css",
+    "main.js": "/infinite-scroll-reddit-no-libraries/static/js/main.126c2271.js",
+    "static/js/787.0d450f7a.chunk.js": "/infinite-scroll-reddit-no-libraries/static/js/787.0d450f7a.chunk.js",
+    "index.html": "/infinite-scroll-reddit-no-libraries/index.html",
+    "main.87d98a23.css.map": "/infinite-scroll-reddit-no-libraries/static/css/main.87d98a23.css.map",
+    "main.126c2271.js.map": "/infinite-scroll-reddit-no-libraries/static/js/main.126c2271.js.map",
+    "787.0d450f7a.chunk.js.map": "/infinite-scroll-reddit-no-libraries/static/js/787.0d450f7a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.87d98a23.css",
+    "static/js/main.126c2271.js"
+  ]
+}
