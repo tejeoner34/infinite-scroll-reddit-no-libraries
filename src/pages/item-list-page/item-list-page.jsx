@@ -1,40 +1,46 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Item from "../../components/item-component/item-component"
 import './style.css'
 
-
 export default function ItemListPage() {
 
-    const [after, updateAfter] = useState('')
+    let after = useRef('')
     const [itemsList, setItemsList] = useState([])
     const [documentHeight, setDocumentHeight] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
 
 
+    // this function will update the documentHeight and will be used as the parameter function for the scroll event
     const setYHeight = () => {
         setDocumentHeight(window.scrollY)
     }
 
     useEffect(() => {
-     
-        window.addEventListener("scroll", setYHeight)
-
-        if ((window.scrollY === 0 && documentHeight === 0) || (document.documentElement.offsetHeight === (window.scrollY + window.innerHeight) && !isLoading)) {
-
             setIsLoading(true)
-
-            fetch(`https://www.reddit.com/r/aww.json?after=${after}`)
+            fetch(`https://www.reddit.com/r/aww.json?after=${after.current}`)
                 .then(r => r.json())
                 .then(d => {
-                    updateAfter(d.data.after)
+                    after.current = d.data.after
+                    setItemsList(oldvalue => oldvalue.concat(d.data.children))
+                    setIsLoading(false)
+                })
+    }, [])
+
+    useEffect(()=>{
+        // everytime we scroll we will fire the setYHeight function. This will update docuemntHeight and fire the useEffect
+        window.addEventListener("scroll", setYHeight)
+        if ((document.documentElement.offsetHeight === (Math.trunc(window.scrollY + window.innerHeight)) && !isLoading)) {
+            setIsLoading(true)
+            fetch(`https://www.reddit.com/r/aww.json?after=${after.current}`)
+                .then(r => r.json())
+                .then(d => {
+                    after.current = d.data.after
                     setItemsList(oldvalue => oldvalue.concat(d.data.children))
                     setIsLoading(false)
                 })
         }
-
-    }, [documentHeight])
-
-
+    },[documentHeight, isLoading])
+    
 
     return (
         <div className="items-page">
@@ -44,10 +50,10 @@ export default function ItemListPage() {
                 }
             </div>
             {
-                isLoading?
-                <h3 className="loading-message">Loading content...</h3>
-                :
-                null
+                isLoading ?
+                    <h3 className="loading-message">Loading content...</h3>
+                    :
+                    null
             }
         </div>
     )
